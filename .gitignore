@@ -1,3 +1,7 @@
+# Crawled Data
+Naver_Post_Download/
+log/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
