@@ -39,4 +39,4 @@ optional arguments:
 
 
 ## TODO
-* Support  crawl images with specific form `se_card_container` 
+* Support  crawl images with specific form `se_card_container`  (Ex. https://post.naver.com/viewer/postView.nhn?volumeNo=27198154&memberNo=43521146)

@@ -10,9 +10,6 @@ from naver_adapter import *
 
 from collections import deque
 
-# MemberNo = "6272246"
-# Keyword_List = ["수야"]
-# Dir_Name = "Naver_Post_Download"
 Keyword_List = []
 Sub_Page_Lst = deque()
 now_dirname = os.path.dirname(os.path.abspath(__file__))
@@ -31,7 +28,8 @@ if __name__ == "__main__":
     MemberNo = args.MemberNo
     DownloadDate = args.date
     Dir_Name = args.name
-    # ----------- Parse Done ----------
+
+    # ----------- Args Parse Done ----------
 
     try:
         os.makedirs(now_dirname + "/log")

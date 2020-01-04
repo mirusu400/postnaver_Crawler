@@ -37,3 +37,5 @@ optional arguments:
 * `-n NAME` 를 이용하면 저장되는 폴더의 이름을 설정합니다. 기본값은 `Naver_Post_Download` 입니다.
 
 
+## TODO
+* `se_card_container` 형태의 글로 된 이미지를 크롤링하도록 구현 (Ex. https://post.naver.com/viewer/postView.nhn?volumeNo=27198154&memberNo=43521146)
