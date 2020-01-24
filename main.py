@@ -55,6 +55,7 @@ if __name__ == "__main__":
     for Keyword in Keyword_List:
         Download_Done = []
         Download_Done_Num = -1
+        chklink = ""
         if Keyword != -1:
             driver.get('https://post.naver.com/search/authorPost.nhn?memberNo=' + MemberNo)
             driver.implicitly_wait(2)
@@ -62,12 +63,12 @@ if __name__ == "__main__":
             driver.find_element_by_class_name('btn_search').click()
             CsvFile = now_dirname + "/log/" + str(user_name) + "_" + str(Keyword) + ".csv"
             FileDes = now_dirname + "/" + Dir_Name + "/" + user_name + "/" + Keyword
+            print("Search %s Keyword" % (Keyword))
         else:
             driver.get('https://post.naver.com/my.nhn?memberNo=' + MemberNo)
             driver.implicitly_wait(2)
             CsvFile = now_dirname + "/" + "log/" + str(user_name) + ".csv"
             FileDes = now_dirname + "/" + Dir_Name + "/" + user_name + "/_All"
-            print("Search %s Keyword" %(Keyword))
 
         try:
             element = WebDriverWait(driver, 10).until(
@@ -81,48 +82,43 @@ if __name__ == "__main__":
             OpenFile = open(CsvFile, 'r', encoding='utf-8')
             rdr = csv.reader(OpenFile)
             for i in rdr:
-                if Download_Done_Num == -1: Download_Done_Num = int(i[0])
+                # Add already downloaded links to list
+                if Download_Done_Num == -1:
+                    Download_Done_Num = int(i[0])
                 Download_Done.append(i[4])
         except FileNotFoundError:
             Download_Done_Num = 0
-            pass
         group = get_titles(driver)
 
         for i in group:
             imggroup = i.find_all('div', {'class': "image_area"})
             for j in imggroup:
                 link = j.find('a', {'class': "link_end"})['href']
-                if link not in Download_Done:
-                    Sub_Page_Lst.append(link)
+                chklink = link.split("volumeNo=")[1].split("&")[0]
+                if chklink not in Download_Done:
+                    Sub_Page_Lst.append([link,chklink])
                 else:
                     break
 
         Sub_Page_Num = len(Sub_Page_Lst)
         for i in range(1, Sub_Page_Num + 1):
-            Link = Sub_Page_Lst.pop()
+            Link,chklink = Sub_Page_Lst.pop()
             driver.get("https://post.naver.com" + Link)
             driver.implicitly_wait(3)
             print(str(Sub_Page_Num) + " / " + str(i) + ": ", end="")
 
             Title, MakeDir, Fail_Image = crawler(driver.page_source, FileDes, DownloadDate)
 
-            # If Download Fail
-            if Fail_Image == -1:
-                f = open(CsvFile, 'a', encoding='utf-8', newline='')
-                wr = csv.writer(f)
-                wr.writerow([Download_Done_Num + i, Title, user_name, Keyword, Link, MakeDir, Fail_Image])
-                f.close()
-            else:
-                # Write original post link
-                f = open(MakeDir + "link.txt", "w")
-                f.write("https://post.naver.com" + Link)
-                f.close()
+            # Write original post link
+            f = open(MakeDir + "link.txt", "w")
+            f.write("https://post.naver.com" + Link)
+            f.close()
 
-                print("Done!")
+            print("Done!")
 
-                # Write csv which has downloaded
-                f = open(CsvFile, 'a', encoding='utf-8', newline='')
-                wr = csv.writer(f)
-                wr.writerow([Download_Done_Num + i, Title, user_name, Keyword, Link, MakeDir, Fail_Image])
-                f.close()
+            # Write csv which has downloaded
+            f = open(CsvFile, 'a', encoding='utf-8', newline='')
+            wr = csv.writer(f)
+            wr.writerow([Download_Done_Num + i, Title, user_name, Keyword, chklink, MakeDir, Fail_Image])
+            f.close()
 

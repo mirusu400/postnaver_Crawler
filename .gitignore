@@ -1,7 +1,8 @@
 # Crawled Data
 Naver_Post_Download/
 log/
-
+.idea/
+run.bat
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
