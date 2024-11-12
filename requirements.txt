@@ -1,7 +1,7 @@
-beautifulsoup4==4.8.2
-certifi==2022.12.7
-idna==3.7
-requests==2.22.0
-selenium==3.141.0
-soupsieve==1.9.5
-urllib3==1.26.19
+beautifulsoup4
+certifi
+idna
+requests
+selenium
+soupsieve
+urllib3
